@@ -27,18 +27,18 @@ jobs:
         with:
           version: '1.11.4' # Explicitly request Julia 1.11.x (or '1.11.0' for exact)
 
-      - name: Cache Julia artifacts
-        uses: julia-actions/cache@v2 # Caches Pkg artifacts for faster builds
+      # - name: Cache Julia artifacts
+      #   uses: julia-actions/cache@v2 # Caches Pkg artifacts for faster builds
 
-      - name: Switch to docs directory
-        run: |
-            echo "Current working directory: $(pwd)"
-            echo "Contents of current directory:"
-            ls -F
-            cd docs/ # Change directory to the docs folder
-            echo "Changed to directory: $(pwd)"
-            echo "Contents of docs directory:"
-            ls -F
+      # - name: Switch to docs directory
+      #   run: |
+      #       echo "Current working directory: $(pwd)"
+      #       echo "Contents of current directory:"
+      #       ls -F
+      #       cd docs/ # Change directory to the docs folder
+      #       echo "Changed to directory: $(pwd)"
+      #       echo "Contents of docs directory:"
+      #       ls -F
 
       - run: |
             sudo apt-get update && sudo apt-get install -y xorg-dev mesa-utils xvfb libgl1 freeglut3-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev xsettingsd x11-xserver-utils
