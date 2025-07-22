@@ -1,0 +1,54 @@
+name: Documentation
+
+on:
+  push:
+    branches:
+      - master
+    tags: '*'
+  pull_request:
+
+jobs:
+  build:
+    # These permissions are needed to:
+    # - Deploy the documentation: https://documenter.juliadocs.org/stable/man/hosting/#Permissions
+    # - Delete old caches: https://github.com/julia-actions/cache#usage
+    permissions:
+      actions: write
+      contents: write
+      pull-requests: read
+      statuses: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4 # Always the first step to get your code
+
+      - name: Set up Julia
+        uses: julia-actions/setup-julia@v2
+        with:
+          version: '1.11.4' # Explicitly request Julia 1.11.x (or '1.11.0' for exact)
+
+      - name: Cache Julia artifacts
+        uses: julia-actions/cache@v2 # Caches Pkg artifacts for faster builds
+
+      - name: Switch to docs directory
+        run: |
+            echo "Current working directory: $(pwd)"
+            echo "Contents of current directory:"
+            ls -F
+            cd docs/ # Change directory to the docs folder
+            echo "Changed to directory: $(pwd)"
+            echo "Contents of docs directory:"
+            ls -F
+
+      - name: Install dependencies
+        shell: julia --color=yes --project=. {0} # Note: --project=. here
+        run: |
+            using Pkg
+            Pkg.instantiate()
+            println(Pkg.status())
+    #       Pkg.develop(PackageSpec(path="..")) # ".." refers to the parent (Flight.jl) from docs/
+
+    #   - name: Build and deploy
+    #     run: julia --color=yes --project=. make.jl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # If authenticating with GitHub Actions token
