@@ -30,18 +30,10 @@ jobs:
       # - name: Cache Julia artifacts
       #   uses: julia-actions/cache@v2 # Caches Pkg artifacts for faster builds
 
-      # - name: Switch to docs directory
-      #   run: |
-      #       echo "Current working directory: $(pwd)"
-      #       echo "Contents of current directory:"
-      #       ls -F
-      #       cd docs/ # Change directory to the docs folder
-      #       echo "Changed to directory: $(pwd)"
-      #       echo "Contents of docs directory:"
-      #       ls -F
-
-      - run: |
+      - name: Install binary dependencies
+        run: |
             sudo apt-get update && sudo apt-get install -y xorg-dev mesa-utils xvfb libgl1 freeglut3-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev xsettingsd x11-xserver-utils
+
       - run: >
           cd docs;
           DISPLAY=:0 xvfb-run -s '-screen 0 1024x768x24'
