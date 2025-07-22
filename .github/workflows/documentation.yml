@@ -50,7 +50,7 @@ jobs:
           julia --color=yes -e 'using Pkg; Pkg.activate("."); Pkg.instantiate(); println(Pkg.status())'
 
       - name: Build and deploy
-        run: >
+        run: > #as a single line
           cd docs;
           DISPLAY=:0 xvfb-run -s '-screen 0 1024x768x24'
           julia --color=yes --project make.jl
