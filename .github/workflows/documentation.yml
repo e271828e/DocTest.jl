@@ -20,34 +20,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4 # Always the first step to get your code
+        uses: actions/checkout@v4
 
       - name: Set up Julia
         uses: julia-actions/setup-julia@v2
         with:
-          version: '1.11.4' # Explicitly request Julia 1.11.x (or '1.11.0' for exact)
+          version: '1.11.4'
 
-      # - name: Cache Julia artifacts
-      #   uses: julia-actions/cache@v2 # Caches Pkg artifacts for faster builds
+      - name: Cache Julia artifacts
+        uses: julia-actions/cache@v2
 
       - name: Install binary dependencies
-        run: |
-            sudo apt-get update && sudo apt-get install -y xorg-dev mesa-utils xvfb libgl1 freeglut3-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev xsettingsd x11-xserver-utils
+        run: >
+          sudo apt-get update && sudo apt-get install -y xorg-dev mesa-utils
+          xvfb libgl1 freeglut3-dev libxrandr-dev libxinerama-dev libxcursor-dev
+          libxi-dev libxext-dev xsettingsd x11-xserver-utils
 
+      # Note: The DISPLAY environment variable is set to :0, which is the default display for X11.
+      # xvfb-run creates a virtual framebuffer to run graphical applications without a display.
+      # The -s option specifies the screen size and color depth.
+      # This is necessary for packages that require a graphical display, such as CImGui.
+      - name: Instantiate docs environment
       - run: >
           cd docs;
           DISPLAY=:0 xvfb-run -s '-screen 0 1024x768x24'
-          julia --color=yes -e 'println(pwd()); using Pkg; Pkg.activate("."); Pkg.instantiate(); println(Pkg.status())'
-
-        # DISPLAY=:0 xvfb-run -s '-screen 0 1024x768x24' julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
-
-      # - name: Install dependencies
-      #   shell: julia --color=yes --project=. {0} # Note: --project=. here
-      #   run: |
-      #       using Pkg
-      #       Pkg.instantiate()
-      #       println(Pkg.status())
-    #       Pkg.develop(PackageSpec(path="..")) # ".." refers to the parent (Flight.jl) from docs/
+          julia --color=yes -e 'using Pkg; Pkg.activate("."); Pkg.instantiate(); println(Pkg.status())'
 
     #   - name: Build and deploy
     #     run: julia --color=yes --project=. make.jl
