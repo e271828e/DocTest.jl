@@ -41,7 +41,7 @@ jobs:
       # The -s option specifies the screen size and color depth.
       # This is necessary for packages that require a graphical display, such as CImGui.
       - name: Instantiate docs environment
-      - run: >
+        run: >
           cd docs;
           DISPLAY=:0 xvfb-run -s '-screen 0 1024x768x24'
           julia --color=yes -e 'using Pkg; Pkg.activate("."); Pkg.instantiate(); println(Pkg.status())'
