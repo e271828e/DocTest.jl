@@ -31,7 +31,7 @@ jobs:
         uses: julia-actions/cache@v2
 
       - name: Install binary dependencies
-        run: >
+        run: > #as a single line
           sudo apt-get update && sudo apt-get install -y xorg-dev mesa-utils
           xvfb libgl1 freeglut3-dev libxrandr-dev libxinerama-dev libxcursor-dev
           libxi-dev libxext-dev xsettingsd x11-xserver-utils
@@ -41,8 +41,9 @@ jobs:
       # The -s option specifies the screen size and color depth.
       # This is necessary for packages that require a graphical display, such as CImGui.
       - name: Instantiate docs environment
+        run:
+          cd docs
         run: >
-          cd docs;
           DISPLAY=:0 xvfb-run -s '-screen 0 1024x768x24'
           julia --color=yes -e 'using Pkg; Pkg.activate("."); Pkg.instantiate(); println(Pkg.status())'
 
