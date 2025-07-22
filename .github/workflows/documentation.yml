@@ -45,7 +45,7 @@ jobs:
       - run: >
           cd docs;
           DISPLAY=:0 xvfb-run -s '-screen 0 1024x768x24'
-          julia --color=yes --project -e 'println(pwd())'
+          julia --color=yes --project -e 'println(pwd()); using Pkg; Pkg.instantiate(); println(Pkg.status())'
 
         # DISPLAY=:0 xvfb-run -s '-screen 0 1024x768x24' julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
 
