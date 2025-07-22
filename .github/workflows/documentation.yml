@@ -39,15 +39,19 @@ jobs:
       # Note: The DISPLAY environment variable is set to :0, which is the default display for X11.
       # xvfb-run creates a virtual framebuffer to run graphical applications without a display.
       # The -s option specifies the screen size and color depth.
-      # This is necessary for packages that require a graphical display, such as CImGui.
+      # This is necessary for packages that require a graphical display, such as
+      # CImGui.
+      # due to the use of `run: >` syntax, we need the semicolon to separate the
+      # change of directory from the following command
       - name: Instantiate docs environment
-        run:
-          cd docs
         run: >
+          cd docs;
           DISPLAY=:0 xvfb-run -s '-screen 0 1024x768x24'
           julia --color=yes -e 'using Pkg; Pkg.activate("."); Pkg.instantiate(); println(Pkg.status())'
 
-    #   - name: Build and deploy
-    #     run: julia --color=yes --project=. make.jl
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # If authenticating with GitHub Actions token
+      # - name: Build and deploy
+      #   run: |
+      #     cd docs
+      #     julia --color=yes --project make.jl
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # If authenticating with GitHub Actions token
