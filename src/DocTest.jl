@@ -4,6 +4,8 @@ using Random
 using GLFW
 using CImGui
 
-greet() = print("Hello, ", Random.randstring(5), "!")
+export mysum
+
+mysum(a, b) = a + b
 
 end # module DocTest
