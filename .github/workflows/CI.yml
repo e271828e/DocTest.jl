@@ -22,6 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        #when julia-arch is not specified, it defaults to x64 or aarch64 depending on the OS
         os: [ubuntu-latest, windows-latest, macos-latest]
         julia-version: ['1.11']
         include:
