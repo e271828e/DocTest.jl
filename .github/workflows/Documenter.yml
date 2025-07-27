@@ -1,9 +1,3 @@
-# With CImGui as a package dependency, the docs environment instantiation and
-# documentation build steps fail. This issue is due to the CI runner's lack of a
-# graphical display. It is solved by running Julia within a virtual X server
-# environment provided by `xvfb-run`. This requires installing some binary
-# additional dependencies. The solution comes from Makie's documentation YAML.
-
 name: Documenter
 
 on:
