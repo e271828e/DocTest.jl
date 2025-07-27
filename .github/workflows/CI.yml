@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 jobs:
   test:
-    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }}
+    name: Julia ${{ matrix.julia-version }} - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
     permissions: # needed to allow julia-actions/cache to proactively delete old caches that it has created
@@ -22,16 +22,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['1.11'] # - '1.6'
         os: [ubuntu-latest, windows-latest, macos-latest]
+        julia-version: ['1.11']
         include:
           - os: ubuntu-latest #only ubuntu-latest supports (and requires) xvfb-run
-            arch: [jarl]
             prefix: xvfb-run
-          - os: windows-latest
-            arch: [peich]
-          - os: macos-latest
-            arch: [diodeno]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -39,7 +34,7 @@ jobs:
       - name: Set up Julia
         uses: julia-actions/setup-julia@v2
         with:
-          version: ${{ matrix.version }}
+          version: ${{ matrix.julia-version }}
 
       - name: Cache Julia artifacts
         uses: julia-actions/cache@v2
