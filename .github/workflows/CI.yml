@@ -26,12 +26,12 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         include:
           - os: ubuntu-latest #only ubuntu-latest supports (and requires) xvfb-run
-            arch: [x64] # Default arch for all OS
+            arch: [jarl]
             prefix: xvfb-run
           - os: windows-latest
-            arch: [x64]
+            arch: [peich]
           - os: macos-latest
-            arch: [aarch64]
+            arch: [diodeno]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
